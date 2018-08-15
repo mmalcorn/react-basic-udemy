@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
+import Person from './Person/Person'
 import './App.css';
-import Person from './Person/Person';
-import Radium, { StyleRoot } from 'radium';
 
 class App extends Component {
 
@@ -29,7 +28,6 @@ class App extends Component {
     otherState: 'Testing this other piece of state should remain unchanged',
     showPersons: false
   }
-
 
   deletePersonHandler = (personIndex) => {
     const persons = [...this.state.persons]
@@ -59,11 +57,13 @@ class App extends Component {
 
   toggleHandler = () => {
     const doesShow = this.state.showPersons
+
     this.setState({showPersons: !doesShow})
   }
 
   render() {
     let persons = null
+    let button;
 
     const style = {
       backgroundColor: 'green',
@@ -71,10 +71,7 @@ class App extends Component {
       border: '1px solid white',
       padding: '8px',
       font: 'inherit',
-      cursor: 'pointer',
-      ':hover': {
-        backgroundColor: 'blue'
-      }
+      cursor: 'pointer'
     }
 
     if (this.state.showPersons) { 
@@ -86,38 +83,40 @@ class App extends Component {
         </div>
       )
 
+      button = (
+        <button onClick={this.toggleHandler} style={style}>Hide affirmations</button>
+      )
+
       style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon'
-      }
     }
 
-    const classes = []
+    else {
+      button = ( 
+      <button 
+        style={style}
+        onClick={this.toggleHandler}
+      >Show affirmations</button> 
+      )
+    }
 
+    // Conditional rendering of classes
+    const classes = []
     if(this.state.persons.length <= 2) {
       classes.push('red')
     }
-
     if(this.state.persons.length <= 1) {
       classes.push('bold')
     }
 
-    console.log('classes', classes)
-
     return (
-      <StyleRoot>
         <div className="App">
           <h1>React App</h1>
           <p className={classes.join(' ')}>This is really working!</p>
-          <button 
-          style={style}
-          onClick={this.toggleHandler}
-          >Show affirmations</button>
+          {button}
           {persons}
         </div>
-      </StyleRoot>
     );
   }
 }
 
-export default Radium(App);
+export default App;
